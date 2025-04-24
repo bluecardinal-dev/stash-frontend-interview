@@ -1,7 +1,14 @@
 import { StashLink } from '@/components/ui/link';
 import { stashClient } from '@/lib/stash-client';
+import { Metadata } from 'next';
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+    title: 'Discover the Best Independent Hotels - Earn Free Nights',
+    description:
+        'Earn points for free nights at unique, independent boutique hotels. Stash is the top-rated loyalty program for independent hotels and the inspired travelers who love them.'
+};
 
 const Home: React.FC = async () => {
     const destinations = await stashClient.getTopDestinations();

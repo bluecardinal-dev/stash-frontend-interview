@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const preventDefaultPropagtion = (
     e: React.MouseEvent<HTMLElement, MouseEvent>
 ) => {
@@ -14,13 +15,21 @@ export const PropagationStopper = ({
     onClick,
     ...props
 }: PropagationStopperProps) => {
+    const handleEvent = (e: React.MouseEvent | React.KeyboardEvent) => {
+        preventDefaultPropagtion(
+            e as React.MouseEvent<HTMLElement, MouseEvent>
+        );
+        if ('key' in e && e.key !== 'Enter' && e.key !== ' ') return;
+        onClick?.(e as any);
+    };
+
     return (
         <div
+            role="button"
+            tabIndex={0}
+            onClick={handleEvent}
+            onKeyDown={handleEvent}
             {...props}
-            onClick={(e) => {
-                preventDefaultPropagtion(e);
-                if (onClick) onClick(e);
-            }}
         >
             {children}
         </div>

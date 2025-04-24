@@ -1,5 +1,14 @@
 import { HotelList } from '@/components/layout/destination/hotel-list/hotel-list';
 import { stashClient } from '@/lib/stash-client';
+import { Metadata } from 'next';
+
+type DestinationParams = {
+    city: string;
+};
+
+type DestinationProps = {
+    params: Promise<DestinationParams>;
+};
 
 export const dynamicParams = false;
 
@@ -15,13 +24,29 @@ export async function generateStaticParams() {
     }));
 }
 
-type DestinationParams = {
-    city: string;
-};
+/**
+ * Generates metadata for static pages at build time
+ * @see https://nextjs.org/docs/app/building-your-application/optimizing/metadata#dynamic-metadata
+ */
+export async function generateMetadata({
+    params
+}: DestinationProps): Promise<Metadata> {
+    const { city } = await params;
 
-type DestinationProps = {
-    params: Promise<DestinationParams>;
-};
+    const hotels = await stashClient.getHotelsForDestination(city);
+
+    const deslugifiedCity = hotels[0].city;
+    const placeholderImage = hotels[0].image;
+
+    return {
+        title: `Best Independent Hotels in ${deslugifiedCity} - Stash Hotel Rewards`,
+        description: `Find the best independent hotels in ${deslugifiedCity} and earn points when booking.`,
+        // @note: we would want a specific image of this location
+        openGraph: {
+            images: [placeholderImage]
+        }
+    };
+}
 
 const Destination: React.FC<DestinationProps> = async ({ params }) => {
     const { city } = await params;

@@ -105,6 +105,44 @@ class StashClient {
             daily_rate: hotel.daily_rate
         }));
     }
+
+    /**
+     * Searches destinations and hotels by a partial query.
+     * Returns a combined result with matched destinations and hotel names.
+     */
+    async getSuggestions(query: string): Promise<{
+        destinations: Destination[];
+        hotels: Hotel[];
+    }> {
+        if (!query) return { destinations: [], hotels: [] };
+
+        const hotels = await this.getHotels();
+        const queryLower = query.toLowerCase();
+
+        const destinationsMap = new Map<string, Destination>();
+        const matchedHotels: Hotel[] = [];
+
+        for (const hotel of hotels) {
+            const cityMatch = hotel.city.toLowerCase().includes(queryLower);
+            const hotelMatch = hotel.name.toLowerCase().includes(queryLower);
+
+            if (cityMatch) {
+                destinationsMap.set(hotel.city, {
+                    name: hotel.city,
+                    slug: slugify(hotel.city)
+                });
+            }
+
+            if (hotelMatch) {
+                matchedHotels.push(hotel);
+            }
+        }
+
+        return {
+            destinations: Array.from(destinationsMap.values()),
+            hotels: matchedHotels
+        };
+    }
 }
 
 export const stashClient = new StashClient();

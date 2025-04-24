@@ -1,22 +1,37 @@
-import { Search } from 'lucide-react';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
+'use client';
+
+import { useState } from 'react';
+import { useDebounce } from '@/lib/hooks/use-debounce';
+import { useQuery } from '@tanstack/react-query';
+import { stashClient } from '@/lib/stash-client';
+import { SearchInputView } from './search-input-view';
 
 export const SearchInput = () => {
+    const [input, setInput] = useState('');
+    const [query, isDebouncing] = useDebounce(input, 300);
+    const [isInputFocused, setIsInputFocused] = useState(false);
+    const { data, isLoading } = useQuery({
+        queryKey: ['suggestions', query],
+        queryFn: () => stashClient.getSuggestions(query),
+        enabled: !!query
+    });
+
+    const showSuggestions =
+        isInputFocused &&
+        !!query &&
+        !isDebouncing &&
+        data !== undefined &&
+        query.length > 2;
+
     return (
-        <div className="relative w-full max-w-md">
-            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">
-                <Label htmlFor="input">
-                    <Search size={18} className="text-slate-600" />
-                </Label>
-            </div>
-            <Input
-                type="text"
-                id="input"
-                autoComplete="off"
-                placeholder="Search destinations, hotels, etc."
-                className="w-full border-slate-200 pl-10 py-6 !text-base rounded-none focus-visible:ring-orange-200"
-            />
-        </div>
+        <SearchInputView
+            data={data}
+            input={input}
+            isLoading={isLoading}
+            showSuggestions={showSuggestions}
+            query={query}
+            setInput={setInput}
+            setIsInputFocused={setIsInputFocused}
+        />
     );
 };

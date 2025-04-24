@@ -9,11 +9,11 @@ export const SavedHotels: React.FC = () => {
 
     const renderHotels = (hotels: Hotel[]) => {
         return (
-            <>
+            <div className="flex flex-col gap-4">
                 {hotels.map((hotel) => (
                     <MiniHotelCard hotel={hotel} key={hotel.id} />
                 ))}
-            </>
+            </div>
         );
     };
 
