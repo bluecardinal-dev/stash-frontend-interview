@@ -1,4 +1,6 @@
-import { getHotelBySlug, getHotels } from '@/lib/data';
+import { ClientTest } from '@/app/client';
+import { stashClient } from '@/lib/stash-client';
+import Image from 'next/image';
 
 export const dynamicParams = false;
 
@@ -7,9 +9,7 @@ export const dynamicParams = false;
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-static-params
  */
 export async function generateStaticParams() {
-    // NOTE: this is reading data.json from the filesystem. This is a mock.
-    // Normally, we'd fetch data from the Stash backend.
-    const hotels = getHotels();
+    const hotels = stashClient.getHotels();
 
     return hotels.map((hotel) => ({
         city: hotel.slug[0],
@@ -28,17 +28,21 @@ type HotelProps = {
 
 const Hotel: React.FC<HotelProps> = async ({ params }) => {
     const { city, name } = await params;
-
-    // NOTE: this is reading data.json from the filesystem, and then looping through the array
-    // to find the hotel by ID (O(N)). This is a mock. Normally, we'd fetch data from the Stash backend.
-    // Since dynamicParams = false, this only runs at build time unless the cached page is invalidated.
-    const hotel = getHotelBySlug([city, name]);
+    const hotel = stashClient.getHotelBySlug([city, name]);
 
     return (
         <div>
             {hotel.id}
             {hotel.name}
             {hotel.city}
+            <ClientTest test={'no'} />
+            <Image
+                src={hotel.image}
+                alt={`${hotel.name} - ${hotel.city}`}
+                height={500}
+                width={500}
+                priority={true}
+            />
         </div>
     );
 };

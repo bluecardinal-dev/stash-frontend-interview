@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-import { slugify } from './utils';
 import { Hotel } from './types';
+import { slugify } from './utils';
 
 /**
  * Reads provided data.json file and returns the typecasted Hotel data.
