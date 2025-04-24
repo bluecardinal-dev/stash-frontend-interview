@@ -50,5 +50,6 @@ export const POST = async (req: NextRequest) => {
         revalidatePath(`/search/${body.slug?.[0]}`);
     } catch (e) {
         console.log(e);
+        return jsonResponse({ message: 'Internal server error' }, 500);
     }
 };

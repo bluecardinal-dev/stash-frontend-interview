@@ -1,4 +1,3 @@
-import { ClientTest } from '@/app/client';
 import { stashClient } from '@/lib/stash-client';
 import Image from 'next/image';
 
@@ -9,7 +8,7 @@ export const dynamicParams = false;
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-static-params
  */
 export async function generateStaticParams() {
-    const hotels = stashClient.getHotels();
+    const hotels = await stashClient.getHotels();
 
     return hotels.map((hotel) => ({
         city: hotel.slug[0],
@@ -28,20 +27,20 @@ type HotelProps = {
 
 const Hotel: React.FC<HotelProps> = async ({ params }) => {
     const { city, name } = await params;
-    const hotel = stashClient.getHotelBySlug([city, name]);
+    const hotel = await stashClient.getHotelBySlug([city, name]);
 
     return (
         <div>
             {hotel.id}
             {hotel.name}
             {hotel.city}
-            <ClientTest test={'no'} />
             <Image
                 src={hotel.image}
                 alt={`${hotel.name} - ${hotel.city}`}
                 height={500}
                 width={500}
                 priority={true}
+                className="rounded-xl w-auto h-auto"
             />
         </div>
     );

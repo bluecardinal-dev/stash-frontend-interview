@@ -1,8 +1,9 @@
+import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
 import { Header } from '@/components/layout/header';
-import { HomeMainWrapper } from '@/components/layout/home/home-main-wrapper';
+import { MainWrapper } from '@/components/layout/home-main-wrapper';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -13,6 +14,12 @@ const geistMono = Geist_Mono({
     variable: '--font-geist-mono',
     subsets: ['latin']
 });
+
+export const metadata: Metadata = {
+    title: 'Discover the Best Independent Hotels - Earn Free Nights',
+    description:
+        'Earn points for free nights at unique, independent boutique hotels. Stash is the top-rated loyalty program for independent hotels and the inspired travelers who love them.'
+};
 
 export default function RootLayout({
     children
@@ -28,7 +35,7 @@ export default function RootLayout({
                     <div className="w-full flex justify-center">
                         <div className="w-full flex flex-col">
                             <Header />
-                            <HomeMainWrapper>{children}</HomeMainWrapper>
+                            <MainWrapper>{children}</MainWrapper>
                         </div>
                     </div>
                 </Providers>

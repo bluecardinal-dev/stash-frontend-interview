@@ -51,20 +51,22 @@ Nice to haves:
 
 When you are finished, please commit your changes and email a link to your finished project.
 
-## Run Production Build
+## Run Locally
 
-Create a `.env` file in the root directory, and add the following variables:
-
-```env
-BASE_URL=http://localhost:3000
-NEXT_PUBLIC_BASE_URL=http://localhost:3000
-```
-
-Next, build and run:
+First, run the development server:
 
 ```bash
-npm run build
-npm run start
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

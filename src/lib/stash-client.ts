@@ -1,7 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { Hotel } from './types';
+import { Destination, Hotel, HotelRate } from './types';
 import { slugify } from './utils';
+import data from '../../public/data.json';
 
 /**
  * Mock client for retrieving data from Stash backend. Mock methods read data.json
@@ -12,15 +11,11 @@ class StashClient {
      * Reads provided data.json file and returns the typecasted Hotel data.
      * @returns A list of hotels
      */
-    getHotels(): Hotel[] {
-        const filePath = path.join(process.cwd(), 'public', 'data.json');
-        const fileContents = fs.readFileSync(filePath, 'utf8');
-        const hotels: Hotel[] = JSON.parse(fileContents);
-
+    async getHotels(): Promise<Hotel[]> {
         // Add city and name slugs for the sake of this demo and return.
         // A slug will be a tuple with the first item being the slugified city
         // and the second item being the slugified hotel name.
-        return hotels.map((hotel) => {
+        return data.map((hotel) => {
             return {
                 ...hotel,
                 slug: [slugify(hotel.city), slugify(hotel.name)]
@@ -34,12 +29,12 @@ class StashClient {
      * In a real implementation, this would fetch information for a single hotel.
      * @returns A hotel
      */
-    getHotelBySlug(slug?: [string, string]): Hotel {
+    async getHotelBySlug(slug?: [string, string]): Promise<Hotel> {
         if (!slug) {
             throw new Error('Invalid hotel slug: slug is undefined');
         }
 
-        const hotels = this.getHotels();
+        const hotels = await this.getHotels();
         const hotel = hotels.find(
             (hotel) => hotel.slug[0] === slug[0] && hotel.slug[1] === slug[1]
         );
@@ -59,13 +54,56 @@ class StashClient {
      * in each destination. In a real implementation, this would fetch information for just the data needed.
      * @returns A list of hotels
      */
-    getHotelsForDestination(slug: string): Hotel[] {
+    async getHotelsForDestination(slug: string): Promise<Hotel[]> {
         if (!slug) {
             throw new Error('Invalid destination slug: slug is undefined');
         }
 
-        const hotels = this.getHotels();
+        const hotels = await this.getHotels();
         return hotels.filter((hotel) => hotel.slug[0] === slug);
+    }
+
+    /**
+     * Reads provided data.json file and returns the top 25 cities represented in the hotel data (occurance).
+     * In a real implementation, this would fetch information for just the data needed.
+     * @returns A list of destinations
+     */
+    async getTopDestinations(): Promise<Destination[]> {
+        const hotels = await this.getHotels();
+
+        const cityCountMap = new Map<string, number>();
+
+        for (const hotel of hotels) {
+            cityCountMap.set(
+                hotel.city,
+                (cityCountMap.get(hotel.city) || 0) + 1
+            );
+        }
+
+        const destinations: Destination[] = Array.from(cityCountMap.entries())
+            .map(([city, count]) => ({
+                name: city,
+                slug: slugify(city),
+                count
+            }))
+            .sort((a, b) => b.count - a.count)
+            .slice(0, 25);
+
+        return destinations;
+    }
+
+    /**
+     * Reads provided data.json file and returns the rates for each hotel in the destination based
+     * on itinerary range. In a real implementation, this would fetch information for just the data needed.
+     * @returns A list of rates
+     */
+    async getRatesForDestination(slug: string): Promise<HotelRate[]> {
+        const hotels = await this.getHotelsForDestination(slug);
+        return hotels.map((hotel) => ({
+            hotel_id: hotel.id,
+            has_member_rate: hotel.has_member_rate,
+            daily_rate: hotel.daily_rate
+        }));
     }
 }
 

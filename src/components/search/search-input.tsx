@@ -13,6 +13,7 @@ export const SearchInput = () => {
             <Input
                 type="text"
                 id="input"
+                autoComplete="off"
                 placeholder="Search destinations, hotels, etc."
                 className="w-full border-slate-200 pl-10 py-6 !text-base rounded-none focus-visible:ring-orange-200"
             />
