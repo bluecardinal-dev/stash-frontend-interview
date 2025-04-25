@@ -1,7 +1,7 @@
-import { HotelCard } from '@/components/layout/destination/hotel-list/hotel-card';
 import { Hotel, HotelRate } from '@/lib/types';
 import Link from 'next/link';
 import { SavedHotels } from '../saved-hotels';
+import { HotelCard } from './hotel-card';
 
 type HotelListViewProps = {
     rates: HotelRate[];

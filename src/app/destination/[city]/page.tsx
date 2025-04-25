@@ -1,4 +1,4 @@
-import { HotelList } from '@/components/layout/destination/hotel-list/hotel-list';
+import { HotelList } from '@/components/destination/hotel-list/hotel-list';
 import { stashClient } from '@/lib/stash-client';
 import { Metadata } from 'next';
 

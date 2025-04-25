@@ -1,10 +1,12 @@
+'use client';
+
 import { Button } from '@/components/ui/button';
 import { LucideHeart } from 'lucide-react';
-import { PropagationStopper } from '../../../ui/propogation-stopper';
 import { useAtom } from 'jotai/react';
 import { savedHotelsAtom } from '@/store';
 import { cn } from '@/lib/utils';
 import { Hotel } from '@/lib/types';
+import { PropagationStopper } from '@/components/ui/propogation-stopper';
 
 interface AddSavedHotelProps {
     hotel: Hotel;

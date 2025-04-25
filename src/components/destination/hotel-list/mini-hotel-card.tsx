@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { Card, CardContent } from '../../../ui/card';
 import { Hotel } from '@/lib/types';
 import { LucideMapPin } from 'lucide-react';
 import Link from 'next/link';
@@ -7,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useSetAtom } from 'jotai';
 import { savedHotelsAtom } from '@/store';
 import { PropagationStopper } from '@/components/ui/propogation-stopper';
+import { Card, CardContent } from '@/components/ui/card';
 
 type MiniHotelCardProps = {
     hotel: Hotel;

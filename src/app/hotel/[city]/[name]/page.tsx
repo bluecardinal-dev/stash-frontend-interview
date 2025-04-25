@@ -1,7 +1,7 @@
+import { HotelContainer } from '@/components/hotel/hotel-container';
 import { MainWrapper } from '@/components/layout/home-main-wrapper';
 import { stashClient } from '@/lib/stash-client';
 import { Metadata } from 'next';
-import Image from 'next/image';
 
 type HotelParams = {
     city: string;
@@ -53,14 +53,7 @@ const Hotel: React.FC<HotelProps> = async ({ params }) => {
 
     return (
         <MainWrapper>
-            <Image
-                src={hotel.image}
-                alt={`${hotel.name} - ${hotel.city}`}
-                height={500}
-                width={500}
-                priority={true}
-                className="rounded-xl w-auto h-auto"
-            />
+            <HotelContainer hotel={hotel} />
         </MainWrapper>
     );
 };
