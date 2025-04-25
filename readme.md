@@ -53,6 +53,15 @@ When you are finished, please commit your changes and email a link to your finis
 
 ## Run Production Build (Recommended)
 
+### Pre-requisites
+
+You need the following to run this project:
+
+- Node.js
+- Node Package Manager
+
+### Run
+
 Create a `.env` file in the root directory, and add the following variables:
 
 ```env
@@ -66,7 +75,7 @@ Next, install dependencies:
 npm install --force
 ```
 
-I found out late that the version of one of my Shadcn components shows incompatibility with React 19. It works fine, but for now you need to force install dependencies. We can add that to the list of changes I'd make to this project.
+I found out late that the version of one of my Shadcn components shows incompatibility with React 19. It works fine, but for now you need to force install dependencies. We can add that to the list of changes I'd make to this project. I'd start by looking into whether or not I can downgrade React or upgrade the conflicting dependency.
 
 Finally, build and run:
 
