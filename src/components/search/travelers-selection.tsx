@@ -1,14 +1,30 @@
 'use client';
 
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
-import { useState } from 'react';
 import { LucideUsers2 } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Counter } from './counter';
+import { useAtom } from 'jotai';
+import { lastSearchedItineraryAtom } from '@/store';
 
 export const TravelersSelection: React.FC = () => {
-    const [adults, setAdults] = useState<number>(1);
-    const [children, setChildren] = useState<number>(0);
+    // ATOMS / STATE
+    const [lastSearchedItinerary, setLastSearchedItinerary] = useAtom(
+        lastSearchedItineraryAtom
+    );
+    const adults = lastSearchedItinerary.party.adults;
+    const children = lastSearchedItinerary.party.children;
+
+    // ACTIONS
+    const setPartyCount = (type: 'adults' | 'children', count: number) => {
+        setLastSearchedItinerary((prev) => ({
+            ...prev,
+            party: {
+                ...prev.party,
+                [type]: count
+            }
+        }));
+    };
 
     return (
         <Popover>
@@ -23,12 +39,13 @@ export const TravelersSelection: React.FC = () => {
                     <Counter
                         label="Adults"
                         count={adults}
-                        setCount={setAdults}
+                        min={1}
+                        setCount={(count) => setPartyCount('adults', count)}
                     />
                     <Counter
                         label="Children"
                         count={children}
-                        setCount={setChildren}
+                        setCount={(count) => setPartyCount('children', count)}
                     />
                 </div>
             </PopoverContent>

@@ -51,22 +51,28 @@ Nice to haves:
 
 When you are finished, please commit your changes and email a link to your finished project.
 
-## Run Locally
+## Run Production Build (Recommended)
 
-First, run the development server:
+Create a `.env` file in the root directory, and add the following variables:
+
+```env
+BASE_URL=http://localhost:3000
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+Next, install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install --force
+```
+
+I found out late that the version of one of my Shadcn components shows incompatibility with React 19. It works fine, but for now you need to force install dependencies. We can add that to the list of changes I'd make to this project.
+
+Finally, build and run:
+
+```bash
+npm run build
+npm run start
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

@@ -1,3 +1,5 @@
+import { DateRange } from 'react-day-picker';
+
 export type Hotel = {
     id: number;
     name: string;
@@ -18,4 +20,15 @@ export type HotelRate = {
     hotel_id: number;
     has_member_rate: boolean;
     daily_rate: number;
+};
+
+export type Party = {
+    adults: number;
+    children: number;
+};
+
+export type Itinerary = {
+    query: string | null;
+    dateRange?: DateRange;
+    party: Party;
 };

@@ -13,12 +13,13 @@ interface AddSavedHotelProps {
 }
 
 export const AddSavedHotel: React.FC<AddSavedHotelProps> = ({ hotel }) => {
+    // ATOMS / STATE
     const [savedHotels, setSavedHotels] = useAtom(savedHotelsAtom);
-
     const isAdded = savedHotels.some(
         (savedHotel) => savedHotel.id === hotel.id
     );
 
+    // ACTIONS
     const handleToggleSaved = () => {
         setSavedHotels((prev) =>
             isAdded ? prev.filter((h) => h.id !== hotel.id) : [...prev, hotel]

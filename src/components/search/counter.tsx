@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Label } from '../ui/label';
 import { Button } from '../ui/button';
 import { LucideMinus, LucidePlus } from 'lucide-react';
@@ -6,12 +5,18 @@ import { LucideMinus, LucidePlus } from 'lucide-react';
 type CounterProps = {
     count: number;
     label: string;
-    setCount: Dispatch<SetStateAction<number>>;
+    min?: number;
+    setCount: (count: number) => void;
 };
 
-export const Counter: React.FC<CounterProps> = ({ count, label, setCount }) => {
+export const Counter: React.FC<CounterProps> = ({
+    count,
+    label,
+    setCount,
+    min = 0
+}) => {
     const decrementFn = (prevCount: number) => {
-        if (prevCount === 0) {
+        if (prevCount === min) {
             return 0;
         }
 
@@ -31,9 +36,9 @@ export const Counter: React.FC<CounterProps> = ({ count, label, setCount }) => {
                 <Button
                     size="icon"
                     aria-label={`Decrement ${label}`}
-                    onClick={() => setCount(decrementFn)}
+                    onClick={() => setCount(decrementFn(count))}
                     variant="stash"
-                    disabled={count === 0}
+                    disabled={count === min}
                 >
                     <LucideMinus />
                 </Button>
@@ -41,7 +46,7 @@ export const Counter: React.FC<CounterProps> = ({ count, label, setCount }) => {
                 <Button
                     size="icon"
                     aria-label={`Increment ${label}`}
-                    onClick={() => setCount(incrementFn)}
+                    onClick={() => setCount(incrementFn(count))}
                     variant="stash"
                 >
                     <LucidePlus />

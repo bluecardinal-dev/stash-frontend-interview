@@ -5,8 +5,10 @@ import { useAtomValue } from 'jotai';
 import { MiniHotelCard } from './hotel-list/mini-hotel-card';
 
 export const SavedHotels: React.FC = () => {
+    // ATOMS / STATE
     const savedHotels = useAtomValue(savedHotelsAtom);
 
+    // ACTIONS
     const renderHotels = (hotels: Hotel[]) => {
         return (
             <div className="flex flex-col gap-4">

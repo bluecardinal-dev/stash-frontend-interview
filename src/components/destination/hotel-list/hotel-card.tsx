@@ -29,7 +29,7 @@ export const HotelCard: React.FC<HotelCardProps> = ({
                     height={500}
                     width={500}
                     priority={true}
-                    className={`rounded-xl w-full h-full ${size === 'list' ? 'md:w-[300px] md:h-auto' : 'md:w-[500px]'}`}
+                    className={`rounded-xl ${size === 'list' ? 'md:w-[300px]' : 'md:w-[500px]'} w-full h-auto`}
                 />
                 <div className="flex gap-2 flex-col grow">
                     <p className="text-2xl font-medium transition-all hover:underline underline-offset-4 ml-[10px]">

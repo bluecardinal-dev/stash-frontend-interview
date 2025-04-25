@@ -1,4 +1,6 @@
 import { Destination, Hotel } from '@/lib/types';
+import { lastSearchedItineraryAtom } from '@/store';
+import { useSetAtom } from 'jotai';
 import Link from 'next/link';
 
 export type SuggestionsData = {
@@ -17,6 +19,17 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
     isLoading,
     data = { destinations: [], hotels: [] }
 }) => {
+    // ATOMS / STATE
+    const setLastSearchedItinerary = useSetAtom(lastSearchedItineraryAtom);
+
+    // ACTIONS
+    const handleSetLastSearchedItinerary = (queryClicked: string) => {
+        setLastSearchedItinerary((prev) => ({
+            ...prev,
+            query: queryClicked
+        }));
+    };
+
     const highlightMatch = (text: string, query: string) => {
         const index = text.toLowerCase().indexOf(query.toLowerCase());
         if (index === -1) return text;
@@ -49,6 +62,9 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
                                 href={`/destination/${dest.slug}`}
                                 key={dest.slug}
                                 className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                                onClick={() =>
+                                    handleSetLastSearchedItinerary(dest.name)
+                                }
                             >
                                 {highlightMatch(dest.name, query)}
                             </Link>
@@ -68,6 +84,9 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
                                 href={`/hotel/${hotel.slug[0]}/${hotel.slug[1]}`}
                                 key={hotel.id}
                                 className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                                onClick={() =>
+                                    handleSetLastSearchedItinerary(hotel.name)
+                                }
                             >
                                 {highlightMatch(hotel.name, query)}
                             </Link>
